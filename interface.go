@@ -10,8 +10,8 @@ type OutParser interface {
 }
 
 type MOut struct {
-	io          io.ReadWriter
-	namedWriter string
-	parser      OutParser
-	isTerminal  bool
+	Io          io.ReadWriter
+	NamedWriter string
+	Parser      OutParser
+	IsTerminal  bool
 }
