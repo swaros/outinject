@@ -15,3 +15,15 @@ type MOut struct {
 	Parser      OutParser
 	IsTerminal  bool
 }
+
+type OutputManager interface {
+	Std() *MOut
+	Err() *MOut
+	SetParser(parser OutParser) *MOut
+	GetParser() *OutParser
+	Named(key string) *MOut
+	SetNamedWriter(key string, io io.ReadWriter) *MOut
+	ToString(i ...interface{}) string
+	Out(i ...interface{}) (n int, err error)
+	OutLn(i ...interface{}) (n int, err error)
+}
