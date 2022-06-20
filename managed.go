@@ -100,7 +100,7 @@ func (m *MOut) ToString(i ...interface{}) string {
 		var plain PlainParse
 		m.Parser = plain
 	}
-	return m.parser.Message(i...)
+	return m.Parser.Parse(i...)
 
 }
 
@@ -108,18 +108,18 @@ func (m *MOut) ToString(i ...interface{}) string {
 // have the same return values.
 func (m *MOut) Out(i ...interface{}) (n int, err error) {
 	out := m.ToString(i...)
-	if m.io == nil {
+	if m.Io == nil {
 		m.Std()
 	}
-	return fmt.Fprint(m.io, out)
+	return fmt.Fprint(m.Io, out)
 }
 
 // OutLn print the formatted content by using fmt.Fprintln
 // it have the same return values like fmt.Fprintln
 func (m *MOut) OutLn(i ...interface{}) (n int, err error) {
 	out := m.ToString(i...)
-	if m.io == nil {
+	if m.Io == nil {
 		m.Std()
 	}
-	return fmt.Fprintln(m.io, out)
+	return fmt.Fprintln(m.Io, out)
 }
