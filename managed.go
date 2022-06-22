@@ -48,13 +48,27 @@ func NewStdout() *MOut {
 // set stdout as writer
 func (m *MOut) Std() *MOut {
 	m.Io = os.Stdout
-	m.IsTerminal = term.IsTerminal(int(os.Stdout.Fd()))
+	m.detectTerminal(int(os.Stdout.Fd()))
+
 	return m
+}
+
+// detectTerminal if we get information about the terminal, we assigne them
+func (m *MOut) detectTerminal(fd int) {
+	m.IsTerminal = term.IsTerminal(fd)
+	if w, h, err := term.GetSize(fd); err == nil {
+		m.Height = h
+		m.Width = w
+	} else {
+		m.Height = -1
+		m.Width = -1
+	}
 }
 
 // set stderr as writer
 func (m *MOut) Err() *MOut {
 	m.Io = os.Stderr
+	m.detectTerminal(int(os.Stderr.Fd()))
 	return m
 }
 

@@ -10,20 +10,22 @@ type OutParser interface {
 }
 
 type MOut struct {
-	Io          io.ReadWriter
-	NamedWriter string
-	Parser      OutParser
-	IsTerminal  bool
+	Io          io.ReadWriter // currently used ReadWriter
+	NamedWriter string        // if a named write is set, this will be the name
+	Parser      OutParser     // used parser
+	IsTerminal  bool          // if we cloud detect an terminal support
+	Width       int           // the witdth of a terminal, if we have detect a terminal
+	Height      int           // same for the height
 }
 
 type OutputManager interface {
-	Std() *MOut
-	Err() *MOut
-	SetParser(parser OutParser) *MOut
-	GetParser() *OutParser
-	Named(key string) *MOut
-	SetNamedWriter(key string, io io.ReadWriter) *MOut
-	ToString(i ...interface{}) string
-	Out(i ...interface{}) (n int, err error)
-	OutLn(i ...interface{}) (n int, err error)
+	Std() *MOut                                        // Points to the stdout
+	Err() *MOut                                        // Ponints to the Errout
+	SetParser(parser OutParser) *MOut                  // sets the current parser
+	GetParser() *OutParser                             // returns the surrent parser
+	Named(key string) *MOut                            // Like Std() or Err() but for a assigned ReadWriter (SetNamedWriter)
+	SetNamedWriter(key string, io io.ReadWriter) *MOut // adds an costume ReadWriter togehter with an name
+	ToString(i ...interface{}) string                  // creates an String by using the current Parser
+	Out(i ...interface{}) (n int, err error)           // Print the output by using the current Parser and current ReadWriter, without line ending
+	OutLn(i ...interface{}) (n int, err error)         // sam as Out() but with line ending
 }
